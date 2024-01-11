@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """returns the log message obfuscated"""
+from typing import List
 import re
 import logging
-from typing import List
+
 
 
 class RedactingFormatter(logging.Formatter):
@@ -13,6 +14,7 @@ class RedactingFormatter(logging.Formatter):
     SEPARATOR = ";"
 
     def __init__(self, fields):
+        """Class constructor"""
         super(RedactingFormatter, self).__init__(self.FORMAT)
         self.fields = fields
 
