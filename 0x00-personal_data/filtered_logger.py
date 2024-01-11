@@ -5,17 +5,6 @@ import logging
 from typing import List
 
 
-def filter_datum(fields: List[str], redaction: str,
-                 message: str, separator: str) -> str:
-    """
-    PII filtered log
-    """
-    for field in fields:
-        message = re.sub(field+'=.*?'+separator,
-                         field+'='+redaction+separator, message)
-    return message
-
-
 class RedactingFormatter(logging.Formatter):
     """ Redacting Formatter class """
 
@@ -28,5 +17,14 @@ class RedactingFormatter(logging.Formatter):
         self.fields = fields
 
     def format(self, record: logging.LogRecord) -> str:
+        """Formats message"""
         record.msg = filter_datum(self.fields, self.REDACTION, record.msg, self.SEPARATOR)
         return super(RedactingFormatter, self).format(record)
+
+
+def filter_datum(fields: List[str], redaction: str, message: str, separator: str) -> str:
+    """Filtered logs"""
+    return re.sub(
+        fr"({'|'.join(map(re.escape, fields))})=[^ {re.escape(separator)}]*",
+        f"\\1={redaction}", message)
+
