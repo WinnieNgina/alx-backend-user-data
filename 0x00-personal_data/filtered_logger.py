@@ -10,10 +10,10 @@ import mysql.connector
 class RedactingFormatter(logging.Formatter):
     """ Redacting Formatter class """
     REDACTION = "***"
-    FORMAT = "[HOLBERTON] %(name)s %(levelname)s %(asctime)-15s: %(message)s"
+    FORMAT = "[HOLBERTON] user_data %(levelname)s %(asctime)-15s: %(message)s"
     SEPARATOR = ";"
 
-    def __init__(self, fields):
+    def __init__(self, fields: List[str]) -> None:
         super(RedactingFormatter, self).__init__(self.FORMAT)
         self.fields = fields
 
@@ -48,7 +48,7 @@ def get_logger() -> logging.Logger:
 
 
 def get_db() -> mysql.connector.connection.MySQLConnection:
-    """Connect to the databases"""
+    """Connect to the database"""
     username = os.getenv("PERSONAL_DATA_DB_USERNAME", "root")
     password = os.getenv("PERSONAL_DATA_DB_PASSWORD", "")
     host = os.getenv("PERSONAL_DATA_DB_HOST", "localhost")
@@ -62,4 +62,29 @@ def get_db() -> mysql.connector.connection.MySQLConnection:
     )
 
 
+def main() -> None:
+    """Main function to retrieve and filter data from the database"""
+    logger = get_logger()
+    db = get_db()
+    cursor = db.cursor(dictionary=True)
+
+    cursor.execute("SELECT * FROM users;")
+    rows = cursor.fetchall()
+
+    for row in rows:
+        log_message_parts = []
+        for key, value in row.items():
+            log_message_parts.append(f"{key}={value}")
+
+        log_message = "; ".join(log_message_parts)
+        logger.info(log_message)
+
+    cursor.close()
+    db.close()
+
+
 PII_FIELDS = ('name', 'email', 'phone', 'ssn', 'password')
+
+
+if __name__ == "__main__":
+    main()
