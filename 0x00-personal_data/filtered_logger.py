@@ -13,8 +13,7 @@ class RedactingFormatter(logging.Formatter):
     FORMAT = "[HOLBERTON] %(name)s %(levelname)s %(asctime)-15s: %(message)s"
     SEPARATOR = ";"
 
-    def __init__(self, fields: List[str]) -> None:
-        """Constructor"""
+    def __init__(self, fields):
         super(RedactingFormatter, self).__init__(self.FORMAT)
         self.fields = fields
 
@@ -54,6 +53,7 @@ def get_db() -> mysql.connector.connection.MySQLConnection:
     password = os.getenv("PERSONAL_DATA_DB_PASSWORD", "")
     host = os.getenv("PERSONAL_DATA_DB_HOST", "localhost")
     dbname = os.getenv("PERSONAL_DATA_DB_NAME", "")
+
     return mysql.connector.connect(
         user=username,
         password=password,
