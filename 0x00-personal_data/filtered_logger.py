@@ -12,5 +12,6 @@ def filter_datum(fields, redaction, message, separator):
     separating all fields in the log line (message)
     """
     for field in fields:
-        message = re.sub(f"{field}=[^;]*", f"{field}={redaction}", message)
+        message = re.sub(f"{field}=[^{re.escape(separator)}]*",
+                         f"{field}={redaction}", message)
     return message
