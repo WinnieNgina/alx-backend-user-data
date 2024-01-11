@@ -23,4 +23,6 @@ class RedactingFormatter(logging.Formatter):
 
 def filter_datum(fields: List[str], redaction: str, message: str, separator: str) -> str:
     """Filtered logs"""
-    return re.sub(fr"({'|'.join(map(re.escape, fields))})=[^ {re.escape(separator)}]*", f"\\1={redaction}", message)
+    return re.sub(
+        fr"({'|'.join(map(re.escape, fields))})=[^ {re.escape(separator)}]*",
+        f"\\1={redaction}", message)
