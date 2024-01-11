@@ -18,13 +18,14 @@ class RedactingFormatter(logging.Formatter):
 
     def format(self, record: logging.LogRecord) -> str:
         """Formats message"""
-        record.msg = filter_datum(self.fields, self.REDACTION, record.msg, self.SEPARATOR)
+        record.msg = filter_datum(
+            self.fields, self.REDACTION, record.msg, self.SEPARATOR)
         return super(RedactingFormatter, self).format(record)
 
 
-def filter_datum(fields: List[str], redaction: str, message: str, separator: str) -> str:
+def filter_datum(fields: List[str], redaction: str,
+                 message: str, separator: str) -> str:
     """Filtered logs"""
     return re.sub(
         fr"({'|'.join(map(re.escape, fields))})=[^ {re.escape(separator)}]*",
         f"\\1={redaction}", message)
-
