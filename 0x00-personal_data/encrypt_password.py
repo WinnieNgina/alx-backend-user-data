@@ -2,12 +2,9 @@
 """Encrypting passwords"""
 import bcrypt
 
-def hash_password(password):
-    # Generate a random salt
-    salt = bcrypt.gensalt()
 
-    # Hash the password with the salt
-    hashed_password = bcrypt.hashpw(password.encode('utf-8'), salt)
-
+def hash_password(password: str) -> bytes:
+    """Password hashing function"""
+    password = password.encode('utf-8')
+    hashed_password = bcrypt.hashpw(password, bcrypt.gensalt())
     return hashed_password
-
