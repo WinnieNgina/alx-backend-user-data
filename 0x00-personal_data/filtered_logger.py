@@ -2,6 +2,7 @@
 """returns the log message obfuscated"""
 import re
 import logging
+from typing import List
 
 
 class RedactingFormatter(logging.Formatter):
@@ -20,6 +21,6 @@ class RedactingFormatter(logging.Formatter):
         return super(RedactingFormatter, self).format(record)
 
 
-def filter_datum(fields, redaction, message, separator):
+def filter_datum(fields: List[str], redaction: str, message: str, separator: str) -> str:
     """Filtered logs"""
     return re.sub(fr"({'|'.join(map(re.escape, fields))})=[^ {re.escape(separator)}]*", f"\\1={redaction}", message)
