@@ -5,7 +5,5 @@ import re
 
 def filter_datum(fields, redaction, message, separator):
     """Filtered logs"""
-    return re.sub(
-        fr"({'|'.join(map(re.escape, fields))})=[^ {re.escape(separator)}]*",
-        f"\\1={redaction}", message
-    )
+    return re.sub(fr"({'|'.join(map(re.escape, fields))})=[^ {re.escape(separator)}]*", f"\\1={redaction}", message)
+
