@@ -2,6 +2,7 @@
 """This module defines class Auth"""
 from typing import List, TypeVar
 from flask import request
+import fnmatch
 
 
 class Auth:
@@ -19,7 +20,7 @@ class Auth:
             return True
         normalized_path = path.rstrip('/') + '/'
         for excluded_path in excluded_paths:
-            if normalized_path == excluded_path:
+            if fnmatch.fnmatch(path, excluded_path):
                 return False
         return True
 
