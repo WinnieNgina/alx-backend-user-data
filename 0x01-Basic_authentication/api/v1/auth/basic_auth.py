@@ -54,10 +54,21 @@ class BasicAuth(Auth):
             return None
         users = User.search({'email': user_email})
         if not users:
-            """Noe user found with the given email"""
+            """No user found with the given email"""
             return None
         for user in users:
             if user.is_valid_password(user_pwd):
                 return user
         # No valid user password is found
         return None
+
+    def current_user(self, request=None) -> TypeVar('User'):
+        """Retrieve the User instance for a request."""
+        if request is None:
+            return None
+        auth_header = self.authorization_header(request)
+        base64_header = self.extract_base64_authorization_header(auth_header)
+        decoded_value = self.decode_base64_authorization_header(base64_header)
+        user_email, user_pwd = self.extract_user_credentials(decoded_value)
+        user_instance = self.user_object_from_credentials(user_email, user_pwd)
+        return user_instance
