@@ -40,3 +40,4 @@ class SessionAuth(Auth):
     
     def destroy_session(self, request=None):
         """"""
+        pass
