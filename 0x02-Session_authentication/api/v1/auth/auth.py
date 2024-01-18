@@ -21,7 +21,7 @@ class Auth:
             return True
         normalized_path = path.rstrip('/') + '/'
         for excluded_path in excluded_paths:
-            if fnmatch.fnmatch(path, excluded_path):
+            if fnmatch.fnmatch(normalized_path, excluded_path):
                 return False
         return True
 
