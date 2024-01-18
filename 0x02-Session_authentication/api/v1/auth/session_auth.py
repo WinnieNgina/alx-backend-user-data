@@ -3,7 +3,6 @@
 from api.v1.auth.auth import Auth
 import uuid
 from models.user import User
-import os
 
 
 class SessionAuth(Auth):
@@ -43,9 +42,12 @@ class SessionAuth(Auth):
         """Implement log out method"""
         if request is None:
             return False
-        if not self.session_cookie(request):
+        session_id = self.session_cookie(request)
+        if not session_id:
+            return False
+        user_id = self.user_id_for_session_id(session_id)
+        if not user_id:
             return False
         else:
-            session_id = request.cookies.get(os.getenv("SESSION_NAME"))
             del self.user_id_by_session_id[session_id]
             return True
