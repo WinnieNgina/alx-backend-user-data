@@ -20,7 +20,7 @@ def users():
     try:
         email = request.form.get('email')
         password = request.form.get('password')
-        user = Auth.register_user(email, password)
+        user = AUTH.register_user(email, password)
         response = {"email": user.email, "message": "user created"}
         return jsonify(response), 200
     except ValueError:
