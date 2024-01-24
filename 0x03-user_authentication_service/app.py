@@ -3,10 +3,10 @@
 from flask import Flask, jsonify
 
 
-app = Flask()
+app = Flask(__name__)
 
 
-@app.route('/')
+@app.route("/")
 def message():
     """Returns message"""
     return jsonify({"message": "Bienvenue"})
